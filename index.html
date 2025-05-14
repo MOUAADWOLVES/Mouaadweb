@@ -415,6 +415,23 @@
             text-decoration: underline;
         }
         
+        /* Admin Login Form */
+        .admin-login-form {
+            display: none;
+            background: rgba(10, 10, 10, 0.9);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
+        }
+        
+        .admin-login-form h3 {
+            color: var(--accent);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .logo h1 {
@@ -456,8 +473,14 @@
         </div>
         
         <div class="admin-login">
-            <input type="password" id="adminPassword" placeholder="Enter Admin Password" style="display: none;">
             <button id="toggleAdmin" class="action-btn">ADMIN ACCESS</button>
+            <div class="admin-login-form" id="adminLoginForm">
+                <h3><i class="fas fa-lock"></i> ADMIN LOGIN</h3>
+                <div class="auth-form">
+                    <input type="password" id="adminPassword" placeholder="Enter Admin Password">
+                    <button id="adminLoginBtn">AUTHENTICATE</button>
+                </div>
+            </div>
         </div>
         
         <div class="admin-panel" id="adminPanel">
@@ -467,6 +490,7 @@
             <button class="admin-btn" id="linkBtn"><i class="fas fa-link"></i> Manage Links</button>
             <button class="admin-btn" id="clearPostsBtn"><i class="fas fa-trash"></i> Clear All Posts</button>
             <button class="admin-btn" id="toggleUserAuth"><i class="fas fa-users"></i> User Registration System</button>
+            <button class="admin-btn" id="logoutAdmin"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </div>
         
         <div class="user-auth" id="userAuthPanel">
@@ -530,28 +554,45 @@
     <script>
         // Admin Panel Functionality
         const toggleAdmin = document.getElementById('toggleAdmin');
+        const adminLoginForm = document.getElementById('adminLoginForm');
         const adminPassword = document.getElementById('adminPassword');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
         const adminPanel = document.getElementById('adminPanel');
+        const logoutAdmin = document.getElementById('logoutAdmin');
         const ADMIN_PASS = "123456"; // Updated password
         
+        // Toggle admin login form
         toggleAdmin.addEventListener('click', () => {
-            if (adminPassword.style.display === 'none') {
-                adminPassword.style.display = 'block';
-                toggleAdmin.textContent = 'AUTHENTICATE';
+            if (adminLoginForm.style.display === 'none' || !adminLoginForm.style.display) {
+                adminLoginForm.style.display = 'block';
+                toggleAdmin.textContent = 'CANCEL';
             } else {
-                if (adminPassword.value === ADMIN_PASS) {
-                    adminPanel.style.display = 'block';
-                    adminPassword.style.display = 'none';
-                    toggleAdmin.textContent = 'ADMIN ACCESS';
-                    adminPassword.value = '';
-                    
-                    // Smooth scroll to admin panel
-                    adminPanel.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    alert('Access Denied: Invalid Credentials');
-                    adminPassword.value = '';
-                }
+                adminLoginForm.style.display = 'none';
+                toggleAdmin.textContent = 'ADMIN ACCESS';
+                adminPassword.value = '';
             }
+        });
+        
+        // Admin login
+        adminLoginBtn.addEventListener('click', () => {
+            if (adminPassword.value === ADMIN_PASS) {
+                adminPanel.style.display = 'block';
+                adminLoginForm.style.display = 'none';
+                toggleAdmin.textContent = 'ADMIN ACCESS';
+                adminPassword.value = '';
+                
+                // Smooth scroll to admin panel
+                adminPanel.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                alert('Access Denied: Invalid Credentials');
+                adminPassword.value = '';
+            }
+        });
+        
+        // Admin logout
+        logoutAdmin.addEventListener('click', () => {
+            adminPanel.style.display = 'none';
+            alert('You have been logged out from admin panel');
         });
         
         // Initialize content array (would normally come from a database)
@@ -581,41 +622,4 @@
                     </div>
                 `;
                 
-                contentGrid.appendChild(contentCard);
-                
-                // Add click event to open modal
-                contentCard.addEventListener('click', (e) => {
-                    if (!e.target.classList.contains('action-btn')) {
-                        openContentModal(index);
-                    }
-                });
-                
-                // Add click event to action button
-                const btn = contentCard.querySelector('.action-btn');
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    openContentModal(index);
-                });
-            });
-        }
-        
-        // Function to open content modal
-        function openContentModal(index) {
-            const content = contentData[index];
-            const modal = document.getElementById('contentModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalDescription = document.getElementById('modalDescription');
-            const modalImages = document.getElementById('modalImages');
-            
-            modalTitle.textContent = content.title;
-            modalDescription.textContent = content.description;
-            
-            // Clear previous images
-            modalImages.innerHTML = '';
-            
-            // Add all images
-            content.images.forEach(img => {
-                const imgElement = document.createElement('img');
-                imgElement.src = img;
-                imgElement.alt = content.title;
-                modalImages.appendChild(imgElemen
+                contentGrid.appendChild(contentCa
