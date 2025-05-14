@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadownet - Ultimate Content Hub</title>
+    <style>
+        :root {
+            --primary: #121212;
+            --secondary: #1e1e1e;
+            --accent: #00ff88;
+            --dark: #0a0a0a;
+            --light: #f0f0f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), 
+                        url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp2WxAEogKZo9OV0enTtogUWS6HEKOxVLuXw&s') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--light);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .logo {
+            text-align: center;
+        }
+        
+        .logo h1 {
+            font-size: 4rem;
+            background: linear-gradient(to right, var(--accent), #00ccff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            letter-spacing: 2px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .logo p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+        
+        .search-bar {
+            display: flex;
+            margin: 40px auto;
+            max-width: 600px;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 18px 25px;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            font-size: 1.1rem;
+            background: rgba(30, 30, 30, 0.8);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .search-bar button {
+            padding: 0 30px;
+            background: var(--accent);
+            color: var(--dark);
+            border: none;
+            border-radius: 0 30px 30px 0;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--accent);
+        }
+        
+        .search-bar button:hover {
+            background: #00cc66;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .content-card {
+            background: rgba(30, 30, 30, 0.7);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .content-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 255, 136, 0.2);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+        
+        .content-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        
+        .content-info {
+            padding: 25px;
+        }
+        
+        .content-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--accent);
+        }
+        
+        .content-info p {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .action-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: var(--accent);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .action-btn:hover {
+            background: #00cc66;
+            transform: translateY(-2px);
+        }
+        
+        .admin-panel {
+            background: rgba(10, 10, 10, 0.9);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 50px;
+            display: none;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
+        }
+        
+        .admin-panel h2 {
+            color: var(--accent);
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+        
+        .admin-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+        
+        .admin-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .admin-btn i {
+            margin-right: 12px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 80px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        footer p {
+            opacity: 0.6;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 40px;
+        }
+        
+        .modal-content {
+            background: var(--secondary);
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
+        }
+        
+        .modal-header {
+            padding: 20px;
+            background: var(--primary);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            position: relative;
+        }
+        
+        .modal-title {
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gallery-image:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+            border-color: var(--accent);
+        }
+        
+        .modal-description {
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--accent);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .download-btn:hover {
+            background: #00cc66;
+            transform: translateY(-2px);
+        }
+        
+        /* Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .featured {
+            animation: float 4s ease-in-out infinite;
+            border: 2px solid var(--accent);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-bar {
+                margin: 30px 0;
+            }
+            
+            .modal {
+                padding: 20px 10px;
+            }
+            
+            .image-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>SHADOWNET</h1>
+                <p>Your Gateway to Premium Digital Content</p>
+            </div>
+        </header>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Discover amazing content...">
+            <button>SEARCH</button>
+        </div>
+        
+        <div class="admin-login">
+            <input type="password" id="adminPassword" placeholder="Enter Admin Password" style="display: none;">
+            <button id="toggleAdmin" class="action-btn">ADMIN ACCESS</button>
+        </div>
+        
+        <div class="admin-panel" id="adminPanel">
+            <h2><i class="fas fa-user-shield"></i> ADMIN CONTROL PANEL</h2>
+            <button class="admin-btn" id="addContentBtn"><i class="fas fa-plus-circle"></i> Add New Content</button>
+            <button class="admin-btn" id="customBtn"><i class="fas fa-edit"></i> Customize Button</button>
+            <button class="admin-btn" id="linkBtn"><i class="fas fa-link"></i> Manage Links</button>
+        </div>
+        
+        <div class="content-grid" id="contentGrid">
+            <!-- Content will be added dynamically -->
+        </div>
+        
+        <footer>
+            <p>© 2025 SHADOWNET. ALL RIGHTS RESERVED.</p>
+        </footer>
+    </div>
+
+    <!-- Modal for Content Details -->
+    <div class="modal" id="contentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">CONTENT TITLE</h2>
+                <span class="close-modal" id="closeModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="image-gallery" id="imageGallery">
+                    <!-- Images will be added dynamically -->
+                </div>
+                <div class="modal-description" id="modalDescription">
+                    <!-- Description will be added dynamically -->
+                </div>
+                <a href="#" class="download-btn" id="downloadBtn"><i class="fas fa-download"></i> DOWNLOAD NOW</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample content data
+        const sampleContent = [
+            {
+                id: 1,
+                title: "PREMIUM CONTENT COLLECTION",
+                description: "Access our exclusive library of high-quality digital content curated for professionals and enthusiasts alike.",
+                images: [
+                    "https://source.unsplash.com/random/800x600?future",
+                    "https://source.unsplash.com/random/800x600?tech",
+                    "https://source.unsplash.com/random/800x600?digital"
+                ],
+                downloadLink: "#",
+                featured: true
+            },
+            {
+                id: 2,
+                title: "TECHNOLOGY INSIGHTS",
+                description: "Cutting-edge technology reviews, tutorials, and industry analysis from leading experts.",
+                images: [
+                    "https://source.unsplash.com/random/800x600?computer",
+                    "https://source.unsplash.com/random/800x600?ai",
+                    "https://source.unsplash.com/random/800x600?programming"
+                ],
+                downloadLink: "#"
+            },
+            {
+                id: 3,
+                title: "CREATIVE RESOURCES",
+                description: "Tools, assets, and inspiration for designers, developers, and content creators.",
+                images: [
+                    "https://source.unsplash.com/random/800x600?design",
+                    "https://source.unsplash.com/random/800x600?art",
+                    "https://source.unsplash.com/random/800x600?creative"
+                ],
+                downloadLink: "#"
+            }
+        ];
+
+        // DOM Elements
+        const contentGrid = document.getElementById('contentGrid');
+        const contentModal = document.getElementById('contentModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const imageGallery = document.getElementById('imageGallery');
+        const modalDescription = document.getElementById('modalDescription');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const closeModal = document.getElementById('closeModal');
+        
+        // Admin Panel Functionality
+        const toggleAdmin = document.getElementById('toggleAdmin');
+        const adminPassword = document.getElementById('adminPassword');
+        const adminPanel = document.getElementById('adminPanel');
+        const ADMIN_PASSWORDS = ["MBL", "MOUAAD", "123456", "12345670"];
+        
+        // Render initial content
+        function renderContent() {
+            contentGrid.innerHTML = '';
+            
+            sampleContent.forEach(content => {
+                const contentCard = document.createElement('div');
+                contentCard.className = `content-card ${content.featured ? 'featured' : ''}`;
+                contentCard.dataset.id = content.id;
+                
+                contentCard.innerHTML = `
+                    <img src="${content.images[0]}" alt="${content.title}">
+                    <div class="content-info">
+                        <h3>${content.title}</h3>
+                        <p>${content.description}</p>
+                        <button class="action-btn view-btn">VIEW CONTENT</button>
+                    </div>
+                `;
+                
+                contentGrid.appendChild(contentCard);
+            });
+            
+            // Add event listeners to view buttons
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const card = this.closest('.content-card');
+                    const contentId = parseInt(card.dataset.id);
+                    showContentDetails(contentId);
+                });
+            });
+        }
+        
+        // Show content details in modal
+        function showContentDetails(contentId) {
+            const content = sampleContent.find(item => item.id === contentId);
+            
+            if (content) {
+                modalTitle.textContent = content.title;
+                modalDescription.textContent = content.description;
+                downloadBtn.href = content.downloadLink;
+                
+                // Clear and populate image gallery
+                imageGallery.innerHTML = '';
+                content.images.forEach(imageUrl => {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.className = 'gallery-image';
+                    img.alt = content.title;
+                    imageGallery.appendChild(img);
+                });
+                
+                // Show modal
+                contentModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        // Close modal
+        closeModal.addEventListener('click', () => {
+            contentModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === contentModal) {
+                contentModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Admin Panel Functionality
+        toggleAdmin.addEventListener('click', () => {
+            if (adminPassword.style.display === 'none') {
+                adminPassword.style.display = 'block';
+                toggleAdmin.textContent = 'AUTHENTICATE';
+            } else {
+                if (ADMIN_PASSWORDS.includes(adminPassword.value.toUpperCase())) {
+                    adminPanel.style.display = 'block';
+                    adminPassword.style.display = 'none';
+                    toggleAdmin.textContent = 'ADMIN ACCESS';
+                    adminPassword.value = '';
+                    
+                    // Smooth scroll to admin panel
+                    adminPanel.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    alert('Access Denied: Invalid Credentials');
+                    adminPassword.value = '';
+                }
+            }
+        });
+        
+               // Admin Buttons Functionality
+        document.getElementById('addContentBtn').addEventListener('click', () => {
+            const title = prompt('Enter content title:');
+            if (title) {
+                const description = prompt('Enter content description:');
+                const downloadLink = prompt('Enter download link:');
+                
+                const imagesInput = prompt('Enter image URLs (separated by commas):');
+                const images = imagesInput ? imagesInput.split(',').map(url => url.trim()) : [];
+                
+                if (images.length === 0) {
+                    alert('At least one image is required!');
+                    return;
+                }
+                
+                const newContent = {
+                    id: sampleContent.length + 1,
+                    title: title.toUpperCase(),
+                    description,
+                    images,
+                    downloadLink: downloadLink || '#',
+                    featured: confirm('Mark as featured content?')
+                };
+                
+                sampleContent.unshift(newContent);
+                renderContent();
+                alert('Content added successfully!');
+            }
+        });
+        
+        document.getElementById('customBtn').addEventListener('click', () => {
+            const customText = prompt('Enter custom button text:');
+            if (customText) {
+                document.getElementById('customBtn').innerHTML = `<i class="fas fa-edit"></i> ${customText}`;
+            }
+        });
+        
+        document.getElementById('linkBtn').addEventListener('click', () => {
+            const linkUrl = prompt('Enter destination URL:');
+            if (linkUrl) {
+                const btnText = prompt('Enter link button text:', 'Visit Resource');
+                document.getElementById('linkBtn').innerHTML = `<i class="fas fa-link"></i> ${btnText}`;
+                document.getElementById('linkBtn').onclick = () => {
+                    window.open(linkUrl, '_blank');
+                };
+            }
+        });
+        
+        // Search functionality
+        const searchInput = document.querySelector('.search-bar input');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.content-card').forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const desc = card.querySelector('p').textContent.toLowerCase();
+                if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+        
+        // Initialize the page
+        renderContent();
+    </script>
+</body>
+</html>
